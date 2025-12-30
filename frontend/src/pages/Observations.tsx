@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { Plus, ArrowUpDown, Eye, Pencil, Trash2 } from 'lucide-react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { observationService } from '@/services/observationService'
@@ -13,6 +14,7 @@ import { format } from 'date-fns'
 export default function Observations() {
   const [deletingObservation, setDeletingObservation] = useState<Observation | null>(null)
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const handleOpenDeleteModal = (observation: Observation) => {
     setDeletingObservation(observation)
@@ -29,33 +31,15 @@ export default function Observations() {
   }
 
   const handleViewObservation = (observation: Observation) => {
-    // TODO: Navigate to observation detail/view page
-    console.log('========== OBSERVATION DETAILS ==========')
-    console.log('Full observation object:', observation)
-    console.log('ID:', observation.id)
-    console.log('Teacher:', observation.teacher)
-    console.log('Evaluation Tool:', observation.evaluation_tool)
-    console.log('Observer:', observation.observer)
-    console.log('Date:', observation.observation_date)
-    console.log('Scores:', observation.scores)
-    console.log('Average Score:', observation.average_score)
-    console.log('Lowest Dimension:', observation.lowest_dimension)
-    console.log('Lowest Score:', observation.lowest_score)
-    console.log('Notes:', observation.notes)
-    console.log('=========================================')
-    toast.info('View page coming soon (check console for details)')
+    navigate(`/observations/view/${observation.id}`)
   }
 
   const handleEditObservation = (observation: Observation) => {
-    // TODO: Navigate to observation edit page
-    console.log('Edit observation:', observation)
-    toast.info('Edit page coming soon')
+    navigate(`/observations/edit/${observation.id}`)
   }
 
   const handleCreateObservation = () => {
-    // TODO: Navigate to observation create page
-    console.log('Create observation')
-    toast.info('Create page coming soon')
+    navigate('/observations/create')
   }
 
   const columns: ColumnDef<Observation>[] = [
@@ -279,7 +263,21 @@ export default function Observations() {
         isDeleting={deleteMutation.isPending}
         observationInfo={
           deletingObservation
-            ? `${deletingObservation.teacher?.first_name || ''} ${deletingObservation.teacher?.last_name || ''} - ${deletingObservation.evaluation_tool?.name || ''} - ${deletingObservation.observation_date}`
+            ? (() => {
+                const date = deletingObservation.observation_date
+                let formattedDate = date
+                try {
+                  const datePart = date.split('T')[0]
+                  const [year, month, day] = datePart.split('-').map(Number)
+                  const parsed = new Date(year, month - 1, day)
+                  formattedDate = format(parsed, 'dd-MM-yyyy')
+                } catch {
+                  formattedDate = date
+                }
+                const teacherName = `${deletingObservation.teacher?.first_name || ''} ${deletingObservation.teacher?.last_name || ''}`
+                const toolName = deletingObservation.evaluation_tool?.name || ''
+                return `${teacherName} / ${toolName} / ${formattedDate}`
+              })()
             : ''
         }
       />

@@ -4,6 +4,7 @@ import { Layout } from '@/components/layout'
 import Dashboard from '@/pages/Dashboard'
 import Teachers from '@/pages/Teachers'
 import Observations from '@/pages/Observations'
+import CreateEditObservation from '@/pages/CreateEditObservation'
 import EvaluationTools from '@/pages/EvaluationTools'
 import Observers from '@/pages/Observers'
 import { Toaster } from '@/components/ui/sonner'
@@ -28,6 +29,9 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/teachers" element={<Teachers />} />
             <Route path="/observations" element={<Observations />} />
+            <Route path="/observations/create" element={<CreateEditObservation />} />
+            <Route path="/observations/edit/:id" element={<CreateEditObservation />} />
+            <Route path="/observations/view/:id" element={<CreateEditObservation />} />
             <Route path="/evaluation-tools" element={<EvaluationTools />} />
             <Route path="/observers" element={<Observers />} />
           </Routes>
