@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { Plus, ArrowUpDown, Pencil, Trash2, Eye } from 'lucide-react'
 import type { ColumnDef } from '@tanstack/react-table'
 import { teacherService } from '@/services/teacherService'
@@ -15,6 +16,7 @@ export default function Teachers() {
   const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null)
   const [deletingTeacher, setDeletingTeacher] = useState<Teacher | null>(null)
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const handleOpenEditModal = (teacher: Teacher) => {
     setEditingTeacher(teacher)
@@ -46,8 +48,7 @@ export default function Teachers() {
   }
 
   const handleViewTeacher = (teacher: Teacher) => {
-    // TODO: Navigate to teacher detail/view page
-    console.log('View teacher:', teacher)
+    navigate(`/teachers/view/${teacher.id}`)
   }
 
   const columns: ColumnDef<Teacher>[] = [

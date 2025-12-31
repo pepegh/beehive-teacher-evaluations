@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Layout } from '@/components/layout'
 import Dashboard from '@/pages/Dashboard'
 import Teachers from '@/pages/Teachers'
+import ViewTeacher from '@/pages/ViewTeacher'
 import Observations from '@/pages/Observations'
 import CreateEditObservation from '@/pages/CreateEditObservation'
 import EvaluationTools from '@/pages/EvaluationTools'
@@ -28,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/teachers" element={<Teachers />} />
+            <Route path="/teachers/view/:id" element={<ViewTeacher />} />
             <Route path="/observations" element={<Observations />} />
             <Route path="/observations/create" element={<CreateEditObservation />} />
             <Route path="/observations/edit/:id" element={<CreateEditObservation />} />

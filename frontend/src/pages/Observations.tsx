@@ -16,6 +16,16 @@ export default function Observations() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
+  const getScorePillColor = (score: number) => {
+    if (score < 3.0) {
+      return 'bg-red-100 text-red-800 border-red-200'
+    } else if (score >= 3.0 && score <= 3.5) {
+      return 'bg-green-100 text-green-800 border-green-200'
+    } else {
+      return 'bg-blue-100 text-blue-800 border-blue-200'
+    }
+  }
+
   const handleOpenDeleteModal = (observation: Observation) => {
     setDeletingObservation(observation)
   }
@@ -102,16 +112,6 @@ export default function Observations() {
       },
     },
     {
-      accessorFn: (row) => row.observer?.name || '',
-      id: 'observer',
-      header: 'Observer',
-      cell: ({ row }) => {
-        const observer = row.original.observer
-        if (!observer) return <span className="text-sm text-gray-400">-</span>
-        return <div className="text-sm text-gray-600">{observer.name}</div>
-      },
-    },
-    {
       accessorKey: 'average_score',
       header: ({ column }) => {
         return (
@@ -127,8 +127,44 @@ export default function Observations() {
       cell: ({ row }) => {
         const score = row.getValue('average_score') as number
         return (
-          <div className="text-sm font-medium text-gray-900">
-            {score.toFixed(2)}
+          <div className="flex justify-start">
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getScorePillColor(score)}`}>
+              {score.toFixed(2)}
+            </span>
+          </div>
+        )
+      },
+    },
+    {
+      accessorKey: 'lowest_dimension',
+      header: 'Lowest Dimension',
+      cell: ({ row }) => {
+        const dimension = row.getValue('lowest_dimension') as string | null
+        if (!dimension) return <span className="text-sm text-gray-400">-</span>
+        return <div className="text-sm text-gray-900">{dimension}</div>
+      },
+    },
+    {
+      accessorKey: 'lowest_score',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Lowest Score
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => {
+        const score = row.getValue('lowest_score') as number | null
+        if (score === null || score === undefined) return <span className="text-sm text-gray-400">-</span>
+        return (
+          <div className="flex justify-start">
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getScorePillColor(score)}`}>
+              {score.toFixed(2)}
+            </span>
           </div>
         )
       },
@@ -203,17 +239,9 @@ export default function Observations() {
           .filter((name): name is string => !!name)
       )
     )
-    const observers = Array.from(
-      new Set(
-        observations
-          .map((o) => o.observer?.name)
-          .filter((name): name is string => !!name)
-      )
-    )
 
     return [
       { columnKey: 'evaluation_tool', label: 'Evaluation Tool', options: evaluationTools },
-      { columnKey: 'observer', label: 'Observer', options: observers },
     ]
   }, [observations])
 
