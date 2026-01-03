@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\EvaluationToolController;
 use App\Http\Controllers\Api\ObservationController;
 use App\Http\Controllers\Api\ObserverController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\AnalyticsController;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('teachers', TeacherController::class);
@@ -15,3 +16,6 @@ Route::apiResource('observers', ObserverController::class);
 // Dashboard endpoints
 Route::get('dashboard/tool-analysis', [DashboardController::class, 'toolAnalysis']);
 Route::get('dashboard/teacher-performance', [DashboardController::class, 'teacherPerformance']);
+
+// Analytics endpoints
+Route::get('analytics/dimension-weakness', [AnalyticsController::class, 'dimensionWeakness']);
