@@ -10,6 +10,8 @@ export interface DimensionWeaknessData {
   averageScore: number
   weakCount: number
   weakTeachers: WeakTeacher[]
+  strongCount: number
+  strongTeachers: WeakTeacher[]
 }
 
 export interface DimensionWeaknessParams {

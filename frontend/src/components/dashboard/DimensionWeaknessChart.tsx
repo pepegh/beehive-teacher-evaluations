@@ -10,7 +10,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, TrendingUp } from 'lucide-react'
 import type { DimensionWeaknessData } from '@/services/analyticsService'
 
 interface DimensionWeaknessChartProps {
@@ -101,7 +101,7 @@ export function DimensionWeaknessChart({ data }: DimensionWeaknessChartProps) {
         </div>
       </div>
 
-      {/* Accordion for detailed view */}
+      {/* Accordion for weak performers (below 3.0) */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-red-500" />
@@ -151,6 +151,61 @@ export function DimensionWeaknessChart({ data }: DimensionWeaknessChartProps) {
           <div className="text-center py-8 border rounded-lg bg-muted/20">
             <p className="text-muted-foreground text-sm">
               No teachers with scores below 3.0 in any dimension
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Accordion for strong performers (3.5-4.0) */}
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+          <TrendingUp className="h-5 w-5 text-blue-500" />
+          Teachers above 3.5 by Dimension
+        </h3>
+        <Accordion type="single" collapsible className="w-full border rounded-lg overflow-hidden">
+          {data
+            .filter((item) => item.strongCount > 0)
+            .map((item, index, array) => (
+              <AccordionItem key={index} value={`strong-item-${index}`} className="border-b last:border-b-0">
+                <AccordionTrigger className={`px-4 hover:bg-accent hover:text-accent-foreground ${index === 0 ? 'rounded-t-lg' : ''} ${index === array.length - 1 ? 'rounded-b-lg' : ''}`}>
+                  <div className="flex items-center justify-between w-full pr-4">
+                    <span className="font-medium">{item.dimension}</span>
+                    <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                      {item.strongCount} {item.strongCount === 1 ? 'teacher' : 'teachers'}
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  <div className="overflow-hidden rounded-lg border">
+                    <table className="w-full text-sm">
+                      <thead className="bg-accent">
+                        <tr>
+                          <th className="text-left py-2 px-3 font-medium">Teacher</th>
+                          <th className="text-right py-2 px-3 font-medium">Score</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {item.strongTeachers.map((teacher, idx) => (
+                          <tr key={idx} className="border-t">
+                            <td className="py-2 px-3">{teacher.name}</td>
+                            <td className="text-right py-2 px-3">
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {teacher.score.toFixed(2)}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+        </Accordion>
+        {data.filter((item) => item.strongCount > 0).length === 0 && (
+          <div className="text-center py-8 border rounded-lg bg-muted/20">
+            <p className="text-muted-foreground text-sm">
+              No teachers with scores between 3.5 and 4.0 in any dimension
             </p>
           </div>
         )}

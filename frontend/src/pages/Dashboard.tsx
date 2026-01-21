@@ -60,8 +60,8 @@ export default function Dashboard() {
     <div>
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Stats Cards */}
+      {/* Stats Cards - TODO: Implement with real data */}
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-sm font-medium text-gray-600 mb-1">Total Teachers</div>
           <div className="text-3xl font-bold text-gray-900">24</div>
@@ -85,12 +85,12 @@ export default function Dashboard() {
           <div className="text-3xl font-bold text-gray-900">8</div>
           <div className="text-sm text-gray-500 mt-2">Active observers</div>
         </div>
-      </div>
+      </div> */}
 
-      {/* Dimension Weakness Analysis */}
+      {/* Dimension Analysis */}
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle>Dimension Weakness Analysis</CardTitle>
+          <CardTitle>Dimension Analysis</CardTitle>
           <CardDescription>
             Analyze performance trends across evaluation dimensions
           </CardDescription>
@@ -161,11 +161,6 @@ export default function Dashboard() {
           )}
         </CardContent>
       </Card>
-
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
-        <p className="text-gray-600">Recent observations and evaluations will appear here.</p>
-      </div>
     </div>
   )
 }
