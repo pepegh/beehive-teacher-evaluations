@@ -66,10 +66,12 @@ class AnalyticsController extends Controller
             }
         }
 
-        // Calculate averages and find weak performers (below 3.0)
+        // Calculate averages and find weak performers (below 3.0) and strong performers (3.5-4.0)
         // Process dimensions in the order they were first encountered
         $result = [];
         $weakThreshold = 3.0;
+        $strongLowerThreshold = 3.5;
+        $strongUpperThreshold = 4.0;
 
         foreach ($dimensionOrder as $dimension) {
             $scores = $dimensionScores[$dimension];
@@ -98,11 +100,29 @@ class AnalyticsController extends Controller
                 return $a['score'] <=> $b['score'];
             });
 
+            // Find teachers between 3.5 and 4.0 (strong performers)
+            $strongTeachers = [];
+            foreach ($teacherAverages as $teacherName => $teacherAverage) {
+                if ($teacherAverage >= $strongLowerThreshold && $teacherAverage <= $strongUpperThreshold) {
+                    $strongTeachers[] = [
+                        'name' => $teacherName,
+                        'score' => round($teacherAverage, 2),
+                    ];
+                }
+            }
+
+            // Sort strong teachers by score (highest first)
+            usort($strongTeachers, function($a, $b) {
+                return $b['score'] <=> $a['score'];
+            });
+
             $result[] = [
                 'dimension' => $dimension,
                 'averageScore' => round($averageScore, 2),
                 'weakCount' => count($weakTeachers),
                 'weakTeachers' => $weakTeachers,
+                'strongCount' => count($strongTeachers),
+                'strongTeachers' => $strongTeachers,
             ];
         }
 
