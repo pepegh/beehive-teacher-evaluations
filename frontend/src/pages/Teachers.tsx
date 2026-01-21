@@ -53,8 +53,18 @@ export default function Teachers() {
 
   const columns: ColumnDef<Teacher>[] = [
   {
-    accessorFn: (row) => `${row.first_name} ${row.middle_name} ${row.last_name}`,
+    accessorFn: (row) => {
+      const parts = [row.first_name]
+      // Only include middle name if it exists and is not 'n/a'
+      if (row.middle_name && row.middle_name.toLowerCase() !== 'n/a') {
+        parts.push(row.middle_name)
+      }
+      parts.push(row.last_name)
+      return parts.join(' ').trim()
+    },
     id: 'name',
+    enableColumnFilter: true,
+    filterFn: 'includesString',
     header: ({ column }) => {
       return (
         <Button

@@ -5,6 +5,7 @@ import { observationService } from '@/services/observationService'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { DataTable } from '@/components/ui/data-table'
+import { ObservationPerformanceChart } from '@/components/teachers/ObservationPerformanceChart'
 import { ArrowLeft, ClipboardList, Trophy, TrendingDown, Target, ArrowUpDown, Eye } from 'lucide-react'
 import { format } from 'date-fns'
 import type { ColumnDef } from '@tanstack/react-table'
@@ -492,6 +493,16 @@ export default function ViewTeacher() {
           </div>
         </div>
       </div>
+
+      {/* Performance Over Time Chart */}
+      {teacherObservations.length > 0 && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 border-b pb-2 mb-6">
+            Performance Over Time
+          </h2>
+          <ObservationPerformanceChart observations={teacherObservations} />
+        </div>
+      )}
 
       {/* Observations History Table */}
       <div className="bg-white rounded-lg shadow p-6">
