@@ -8,7 +8,6 @@ import {
 import {
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from '@/components/ui/chart'
 import { AlertTriangle, TrendingUp } from 'lucide-react'
 import type { DimensionWeaknessData } from '@/services/analyticsService'

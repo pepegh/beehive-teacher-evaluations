@@ -5,7 +5,6 @@ import { z } from 'zod'
 import { X } from 'lucide-react'
 import type { CreateObserverData, Observer } from '@/types/observer'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -16,8 +15,8 @@ import {
 
 const observerSchema = z.object({
   name: z.string().min(1, 'Name is required').max(255),
-  department: z.enum(['english', 'spanish'], {
-    errorMap: () => ({ message: 'Department is required' }),
+  department: z.enum(['english', 'spanish'] as const, {
+    message: 'Department is required',
   }),
 })
 
