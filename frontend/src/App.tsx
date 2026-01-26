@@ -9,6 +9,7 @@ import CreateEditObservation from '@/pages/CreateEditObservation'
 import EvaluationTools from '@/pages/EvaluationTools'
 import Observers from '@/pages/Observers'
 import { Toaster } from '@/components/ui/sonner'
+import { ErrorBoundary, PageErrorBoundary } from '@/components/ui/error-boundary'
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -23,24 +24,26 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/teachers" element={<Teachers />} />
-            <Route path="/teachers/view/:id" element={<ViewTeacher />} />
-            <Route path="/observations" element={<Observations />} />
-            <Route path="/observations/create" element={<CreateEditObservation />} />
-            <Route path="/observations/edit/:id" element={<CreateEditObservation />} />
-            <Route path="/observations/view/:id" element={<CreateEditObservation />} />
-            <Route path="/evaluation-tools" element={<EvaluationTools />} />
-            <Route path="/observers" element={<Observers />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-      <Toaster />
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<PageErrorBoundary><Dashboard /></PageErrorBoundary>} />
+              <Route path="/teachers" element={<PageErrorBoundary><Teachers /></PageErrorBoundary>} />
+              <Route path="/teachers/view/:id" element={<PageErrorBoundary><ViewTeacher /></PageErrorBoundary>} />
+              <Route path="/observations" element={<PageErrorBoundary><Observations /></PageErrorBoundary>} />
+              <Route path="/observations/create" element={<PageErrorBoundary><CreateEditObservation /></PageErrorBoundary>} />
+              <Route path="/observations/edit/:id" element={<PageErrorBoundary><CreateEditObservation /></PageErrorBoundary>} />
+              <Route path="/observations/view/:id" element={<PageErrorBoundary><CreateEditObservation /></PageErrorBoundary>} />
+              <Route path="/evaluation-tools" element={<PageErrorBoundary><EvaluationTools /></PageErrorBoundary>} />
+              <Route path="/observers" element={<PageErrorBoundary><Observers /></PageErrorBoundary>} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+        <Toaster />
+      </QueryClientProvider>
+    </ErrorBoundary>
   )
 }
 

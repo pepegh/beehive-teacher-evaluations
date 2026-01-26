@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { format, parseISO, isValid } from 'date-fns'
+import { format, isValid } from 'date-fns'
 import { cn } from '@/lib/utils'
 
 const teacherSchema = z.object({
@@ -28,17 +28,17 @@ const teacherSchema = z.object({
   last_name: z.string().min(1, 'Last name is required').max(255),
   email: z.string().email('Invalid email address').optional().or(z.literal('')),
   subject: z.string().max(255).optional(),
-  department: z.enum(['english', 'spanish'], {
-    errorMap: () => ({ message: 'Department is required' }),
+  department: z.enum(['english', 'spanish'] as const, {
+    message: 'Department is required',
   }),
-  level: z.enum(['preprimaria', 'primaria', 'bys', 'areas_practicas', 'especialidad'], {
-    errorMap: () => ({ message: 'Level is required' }),
+  level: z.enum(['preprimaria', 'primaria', 'bys', 'areas_practicas', 'especialidad'] as const, {
+    message: 'Level is required',
   }),
   hire_date: z.string().optional(),
-  status: z.enum(['active', 'inactive', 'on_leave']).optional().default('active'),
+  status: z.enum(['active', 'inactive', 'on_leave'] as const).default('active'),
 })
 
-type TeacherFormData = z.infer<typeof teacherSchema>
+type TeacherFormData = z.input<typeof teacherSchema>
 
 interface AddTeacherModalProps {
   isOpen: boolean
